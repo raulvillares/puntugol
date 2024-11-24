@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Puntuación Fútbol Sala</title>
+  <title>Puntugol</title>
   <script src="https://cdn.jsdelivr.net/npm/@hotwired/stimulus@3.2.1/dist/stimulus.umd.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script>
@@ -88,13 +88,21 @@
   <style>
     body {
       font-family: 'Comic Sans MS', sans-serif;
+      background: url('img/logo.png') no-repeat center;
+      background-size: 200px;
+      background-color: #e0f7ff;
     }
   </style>
+  <link rel="icon" type="image/png" href="img/logo.png">
 </head>
 <body class="bg-blue-100 min-h-screen flex flex-col items-center justify-center p-4">
 
-  <div data-controller="form" class="w-full max-w-md bg-white rounded-xl shadow-lg p-6">
-    <h1 class="text-3xl font-bold text-center text-blue-600 mb-4">Puntuación Fútbol Sala</h1>
+  <!-- Encabezado con el logo -->
+  <div data-controller="form" class="w-full max-w-md bg-white rounded-xl shadow-lg p-6 text-center">
+    <img src="path/to/your/logo.png" alt="Puntugol Logo" class="mx-auto mb-4 w-48 h-auto">
+    <h1 class="text-3xl font-bold text-center text-blue-600 mb-4">¡Bienvenido a Puntugol!</h1>
+
+    <!-- Formulario -->
     <form data-action="submit->form#calculateScore">
       <div class="mb-4">
         <label class="block text-blue-700 font-bold mb-2" for="team">Nombre del equipo</label>
@@ -153,7 +161,10 @@
         Calcular Puntuación
       </button>
     </form>
+
+    <!-- Resultado -->
     <div id="result" class="mt-6 hidden text-center" data-form-target="result">
+      <img src="path/to/your/logo.png" alt="Puntugol Logo" class="mx-auto mb-4 w-32 h-auto">
       <h2 class="text-2xl font-bold mb-2" data-form-target="resultPlayer"></h2>
       <p class="text-4xl font-bold text-blue-600" data-form-target="resultScore"></p>
       <p class="text-lg mt-2" data-form-target="resultComment"></p>
