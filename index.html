@@ -9,80 +9,89 @@
   <script>
     const application = Stimulus.Application.start();
 
-    application.register("form", class extends Stimulus.Controller {
-      static targets = [
-        "team", "player", "opponent", "difficulty",
-        "saves", "keySaves", "goodPlays",
-        "effort", "attitude",
-        "result", "resultPlayer", "resultScore", "resultComment"
-      ];
+	application.register("form", class extends Stimulus.Controller {
+	  static targets = [
+	    "team", "player", "opponent", "difficulty",
+	    "saves", "keySaves", "goodPlays",
+	    "effort", "attitude",
+	    "result", "resultPlayer", "resultComment", "scoreCircle"
+	  ];
 
-      calculateScore(event) {
-        event.preventDefault();
+	  calculateScore(event) {
+	    event.preventDefault();
 
-        const difficultyWeights = {
-          inferior: 10,
-          parejo: 20,
-          ligeramente_superior: 30,
-          superior: 40,
-          muy_superior: 50,
-        };
+	    const difficultyWeights = {
+	      inferior: 10,
+	      parejo: 20,
+	      ligeramente_superior: 30,
+	      superior: 40,
+	      muy_superior: 50,
+	    };
 
-        const effortWeights = {
-          bajas: 5,
-          normales: 10,
-          altas: 20,
-          muy_altas: 30,
-        };
+	    const effortWeights = {
+	      bajas: 5,
+	      normales: 10,
+	      altas: 20,
+	      muy_altas: 30,
+	    };
 
-        const attitudeWeights = {
-          mejorable: 10,
-          normal: 20,
-          buena: 30,
-          muy_buena: 40,
-          excelente: 50,
-        };
+	    const attitudeWeights = {
+	      mejorable: 10,
+	      normal: 20,
+	      buena: 30,
+	      muy_buena: 40,
+	      excelente: 50,
+	    };
 
-        const difficulty = difficultyWeights[this.difficultyTarget.value];
-        const saves = parseInt(this.savesTarget.value || 0);
-        const keySaves = parseInt(this.keySavesTarget.value || 0);
-        const goodPlays = parseInt(this.goodPlaysTarget.value || 0);
-        const effort = effortWeights[this.effortTarget.value];
-        const attitude = attitudeWeights[this.attitudeTarget.value];
+	    const difficulty = difficultyWeights[this.difficultyTarget.value];
+	    const saves = parseInt(this.savesTarget.value || 0);
+	    const keySaves = parseInt(this.keySavesTarget.value || 0);
+	    const goodPlays = parseInt(this.goodPlaysTarget.value || 0);
+	    const effort = effortWeights[this.effortTarget.value];
+	    const attitude = attitudeWeights[this.attitudeTarget.value];
 
-        const score = Math.min(
-          100,
-          difficulty * 0.8 + saves * 1.6 + keySaves * 4 + goodPlays * 3 +
-            effort * 0.8 + attitude * 0.7
-        );
+	    const score = Math.min(
+	      100,
+	      difficulty * 0.8 + saves * 1.6 + keySaves * 4 + goodPlays * 3 +
+	        effort * 0.8 + attitude * 0.7
+	    );
 
-        const comments = [
-          "Mejorable 😟", 
-          "Normal 🙂", 
-          "Bien 👍", 
-          "Muy Bien 🌟", 
-          "Excelente 🎉", 
-          "Impresionante 💪", 
-          "¡Increíble! 🏆"
-        ];
-        const commentIndex = Math.max(0, Math.floor(score / 10) - 5);
+	    const comments = [
+	      "Mejorable 😟", 
+	      "Normal 🙂", 
+	      "Bien 👍", 
+	      "Muy Bien 🌟", 
+	      "Excelente 🎉", 
+	      "Impresionante 💪", 
+	      "¡Increíble! 🏆"
+	    ];
+	    const commentIndex = Math.max(0, Math.floor(score / 10) - 5);
 
-        this.resultPlayerTarget.innerText = `Jugador: ${this.playerTarget.value}`;
-        this.resultScoreTarget.innerText = `Puntuación: ${Math.round(score)}`;
-        this.resultCommentTarget.innerText = comments[commentIndex] || "Mejorable";
+	    // Actualizar el texto del jugador y comentario
+	    this.resultPlayerTarget.innerText = `Jugador: ${this.playerTarget.value}`;
+	    this.resultCommentTarget.innerText = comments[commentIndex] || "Mejorable";
 
-        this.resultTarget.classList.remove("hidden");
+	    // Cambiar el color del círculo según la puntuación
+	    let bgColor = "bg-red-500"; // Default: Rojo para puntuaciones bajas
+	    if (score >= 50 && score < 70) bgColor = "bg-yellow-500"; // Amarillo
+	    if (score >= 70 && score < 90) bgColor = "bg-green-500"; // Verde
+	    if (score >= 90) bgColor = "bg-blue-500"; // Azul
+	    this.scoreCircleTarget.className = `w-32 h-32 flex items-center justify-center rounded-full text-white font-bold text-4xl ${bgColor}`;
+	    this.scoreCircleTarget.innerText = Math.round(score);
 
-        // Lanzar confeti si la puntuación es 80 o más
-        if (score >= 80) {
-          confetti({
-            particleCount: 100,
-            spread: 70,
-            origin: { y: 0.6 },
-          });
-        }
-      }
-    });
+	    // Mostrar el resultado
+	    this.resultTarget.classList.remove("hidden");
+
+	    // Lanzar confeti si la puntuación es 80 o más
+	    if (score >= 80) {
+	      confetti({
+	        particleCount: 100,
+	        spread: 70,
+	        origin: { y: 0.6 },
+	      });
+	    }
+	  }
+	});
   </script>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -99,7 +108,7 @@
 
   <!-- Encabezado con el logo -->
   <div data-controller="form" class="w-full max-w-md bg-white rounded-xl shadow-lg p-6 text-center">
-    <img src="path/to/your/logo.png" alt="Puntugol Logo" class="mx-auto mb-4 w-48 h-auto">
+    <img src="img/logo.png" alt="Puntugol Logo" class="mx-auto mb-4 w-32 h-auto">
     <h1 class="text-3xl font-bold text-center text-blue-600 mb-4">¡Bienvenido a Puntugol!</h1>
 
     <!-- Formulario -->
@@ -164,9 +173,14 @@
 
     <!-- Resultado -->
     <div id="result" class="mt-6 hidden text-center" data-form-target="result">
-      <img src="path/to/your/logo.png" alt="Puntugol Logo" class="mx-auto mb-4 w-32 h-auto">
+      <img src="img/logo.png" alt="Puntugol Logo" class="mx-auto mb-4 w-32 h-auto">
+      <div class="flex justify-center mb-4">
+        <div 
+          class="w-32 h-32 flex items-center justify-center rounded-full text-white font-bold text-4xl" 
+          data-form-target="scoreCircle">
+        </div>
+      </div>
       <h2 class="text-2xl font-bold mb-2" data-form-target="resultPlayer"></h2>
-      <p class="text-4xl font-bold text-blue-600" data-form-target="resultScore"></p>
       <p class="text-lg mt-2" data-form-target="resultComment"></p>
     </div>
   </div>
