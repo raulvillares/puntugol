@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Puntuación Fútbol Sala</title>
+  <script src="https://cdn.jsdelivr.net/npm/@hotwired/stimulus@3.2.1/dist/stimulus.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    const application = Stimulus.Application.start();
+
+    application.register("form", class extends Stimulus.Controller {
+      static targets = [
+        "team", "player", "opponent", "difficulty",
+        "saves", "keySaves", "goodPlays",
+        "effort", "attitude",
+        "result", "resultPlayer", "resultScore", "resultComment"
+      ];
+
+      calculateScore(event) {
+        event.preventDefault();
+
+        const difficultyWeights = {
+          inferior: 10,
+          parejo: 20,
+          ligeramente_superior: 30,
+          superior: 40,
+          muy_superior: 50,
+        };
+
+        const effortWeights = {
+          bajas: 5,
+          normales: 10,
+          altas: 20,
+          muy_altas: 30,
+        };
+
+        const attitudeWeights = {
+          mejorable: 10,
+          normal: 20,
+          buena: 30,
+          muy_buena: 40,
+          excelente: 50,
+        };
+
+        const difficulty = difficultyWeights[this.difficultyTarget.value];
+        const saves = parseInt(this.savesTarget.value || 0);
+        const keySaves = parseInt(this.keySavesTarget.value || 0);
+        const goodPlays = parseInt(this.goodPlaysTarget.value || 0);
+        const effort = effortWeights[this.effortTarget.value];
+        const attitude = attitudeWeights[this.attitudeTarget.value];
+
+        const score = Math.min(
+          100,
+          difficulty * 0.8 + saves * 1.6 + keySaves * 4 + goodPlays * 3 +
+            effort * 0.8 + attitude * 0.7
+        );
+
+        const comments = [
+          "Mejorable 😟", 
+          "Normal 🙂", 
+          "Bien 👍", 
+          "Muy Bien 🌟", 
+          "Excelente 🎉", 
+          "Impresionante 💪", 
+          "¡Increíble! 🏆"
+        ];
+        const commentIndex = Math.max(0, Math.floor(score / 10) - 5);
+
+        this.resultPlayerTarget.innerText = `Jugador: ${this.playerTarget.value}`;
+        this.resultScoreTarget.innerText = `Puntuación: ${Math.round(score)}`;
+        this.resultCommentTarget.innerText = comments[commentIndex] || "Mejorable";
+
+        this.resultTarget.classList.remove("hidden");
+
+        // Lanzar confeti si la puntuación es 80 o más
+        if (score >= 80) {
+          confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 },
+          });
+        }
+      }
+    });
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-blue-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+  <div data-controller="form" class="w-full max-w-md bg-white rounded-xl shadow-lg p-6">
+    <h1 class="text-3xl font-bold text-center text-blue-600 mb-4">Puntuación Fútbol Sala</h1>
+    <form data-action="submit->form#calculateScore">
+      <div class="mb-4">
+        <label class="block text-blue-700 font-bold mb-2" for="team">Nombre del equipo</label>
+        <input type="text" id="team" data-form-target="team" class="w-full px-4 py-2 border rounded" required>
+      </div>
+      <div class="mb-4">
+        <label class="block text-blue-700 font-bold mb-2" for="player">Nombre del niño</label>
+        <input type="text" id="player" data-form-target="player" class="w-full px-4 py-2 border rounded" required>
+      </div>
+      <div class="mb-4">
+        <label class="block text-blue-700 font-bold mb-2" for="opponent">Nombre del rival</label>
+        <input type="text" id="opponent" data-form-target="opponent" class="w-full px-4 py-2 border rounded" required>
+      </div>
+      <div class="mb-4">
+        <label class="block text-blue-700 font-bold mb-2" for="difficulty">Dificultad del rival</label>
+        <select id="difficulty" data-form-target="difficulty" class="w-full px-4 py-2 border rounded">
+          <option value="inferior">Inferior</option>
+          <option value="parejo">Parejo</option>
+          <option value="ligeramente_superior">Ligeramente Superior</option>
+          <option value="superior">Superior</option>
+          <option value="muy_superior">Muy Superior</option>
+        </select>
+      </div>
+      <div class="mb-4">
+        <label class="block text-blue-700 font-bold mb-2" for="saves">Paradas</label>
+        <input type="number" id="saves" data-form-target="saves" class="w-full px-4 py-2 border rounded" min="0">
+      </div>
+      <div class="mb-4">
+        <label class="block text-blue-700 font-bold mb-2" for="keySaves">Paradas salvadoras</label>
+        <input type="number" id="keySaves" data-form-target="keySaves" class="w-full px-4 py-2 border rounded" min="0">
+      </div>
+      <div class="mb-4">
+        <label class="block text-blue-700 font-bold mb-2" for="goodPlays">Buenas jugadas</label>
+        <input type="number" id="goodPlays" data-form-target="goodPlays" class="w-full px-4 py-2 border rounded" min="0">
+      </div>
+      <div class="mb-4">
+        <label class="block text-blue-700 font-bold mb-2" for="effort">Ganas</label>
+        <select id="effort" data-form-target="effort" class="w-full px-4 py-2 border rounded">
+          <option value="bajas">Bajas</option>
+          <option value="normales">Normales</option>
+          <option value="altas">Altas</option>
+          <option value="muy_altas">Muy Altas</option>
+        </select>
+      </div>
+      <div class="mb-4">
+        <label class="block text-blue-700 font-bold mb-2" for="attitude">Actitud</label>
+        <select id="attitude" data-form-target="attitude" class="w-full px-4 py-2 border rounded">
+          <option value="mejorable">Mejorable</option>
+          <option value="normal">Normal</option>
+          <option value="buena">Buena</option>
+          <option value="muy_buena">Muy Buena</option>
+          <option value="excelente">Excelente</option>
+        </select>
+      </div>
+      <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700">
+        Calcular Puntuación
+      </button>
+    </form>
+    <div id="result" class="mt-6 hidden text-center" data-form-target="result">
+      <h2 class="text-2xl font-bold mb-2" data-form-target="resultPlayer"></h2>
+      <p class="text-4xl font-bold text-blue-600" data-form-target="resultScore"></p>
+      <p class="text-lg mt-2" data-form-target="resultComment"></p>
+    </div>
+  </div>
+
+</body>
+</html>
