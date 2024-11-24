@@ -174,22 +174,32 @@
       </button>
     </form>
 	
-    <!-- Modal para el resultado -->
-    <div data-form-target="modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-      <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-        <img src="img/logo.png" alt="Puntugol Logo" class="mx-auto mb-4 w-32 h-auto">
-        <div class="mx-auto mb-4">
-          <div 
-            class="w-32 h-32 flex items-center justify-center rounded-full text-white font-bold text-4xl" 
-            data-form-target="scoreCircle"></div>
-        </div>
-        <h2 class="text-2xl font-bold mb-2" data-form-target="resultPlayer"></h2>
-        <p class="text-lg mt-2 mb-4" data-form-target="resultComment"></p>
-        <button data-action="click->form#closeModal" class="bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700">
-          Cerrar
-        </button>
+<!-- Modal para el resultado -->
+<div data-form-target="modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+  <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+    <!-- Logo -->
+    <img src="img/logo.png" alt="Puntugol Logo" class="mx-auto mb-6 w-32 h-auto">
+
+    <!-- Círculo con el resultado -->
+    <div class="flex items-center justify-center mb-6">
+      <div 
+        class="w-40 h-40 flex items-center justify-center rounded-full text-white font-bold text-5xl" 
+        data-form-target="scoreCircle">
       </div>
     </div>
+
+    <!-- Nombre del jugador -->
+    <h2 class="text-2xl font-bold mb-4" data-form-target="resultPlayer"></h2>
+
+    <!-- Comentario -->
+    <p class="text-lg mb-6" data-form-target="resultComment"></p>
+
+    <!-- Botón para cerrar el modal -->
+    <button data-action="click->form#closeModal" class="bg-blue-600 text-white font-bold py-2 px-6 rounded hover:bg-blue-700">
+      Cerrar
+    </button>
+  </div>
+</div>
   </div>
 
 </body>
