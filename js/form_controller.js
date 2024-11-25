@@ -78,6 +78,14 @@ export default class extends Stimulus.Controller {
 
     // Mostrar el modal
     this.modalTarget.classList.remove("hidden");
+
+    if (score >= 90) {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
+    }
   }
 
   closeModal() {
