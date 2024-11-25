@@ -34,6 +34,10 @@
     <!-- Formulario -->
     <form data-action="submit->form#calculateScore">
       <div class="mb-4">
+        <label class="block text-blue-700 font-bold mb-2" for="date">Fecha del partido</label>
+        <input type="date" id="date" data-form-target="date" class="w-full px-4 py-2 border rounded" required>
+      </div>
+      <div class="mb-4">
         <label class="block text-blue-700 font-bold mb-2" for="team">Nombre del equipo</label>
         <input type="text" id="team" data-form-target="team" class="w-full px-4 py-2 border rounded" required>
       </div>
@@ -93,38 +97,44 @@
 
 <!-- Modal para el resultado -->
 <div data-form-target="modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-  <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-    <!-- Logo -->
-    <img src="img/logo.png" alt="Puntugol Logo" class="mx-auto mb-6 w-32 h-auto">
+  <div class="relative bg-white p-8 rounded-lg shadow-2xl text-center max-w-lg w-full">
+    <!-- Logo Puntugol -->
+    <div class="mb-4">
+      <img src="img/logo.png" alt="Puntugol Logo" class="mx-auto w-24 h-auto">
+    </div>
 
-    <!-- Círculo con el resultado -->
-    <div class="flex items-center justify-center mb-6">
+    <!-- Encabezado del modal -->
+    <div class="mb-6">
+      <h2 class="text-2xl font-extrabold text-blue-600">Resultado del Partido</h2>
+      <p class="text-lg text-gray-600 mt-2" data-form-target="matchDetails"></p>
+    </div>
+
+    <!-- Círculo con la puntuación -->
+    <div class="flex justify-center items-center mb-6">
       <div
-        class="w-40 h-40 flex items-center justify-center rounded-full text-white font-bold text-5xl"
-        data-form-target="scoreCircle">
-      </div>
+        class="w-40 h-40 flex items-center justify-center rounded-full text-white font-extrabold text-5xl shadow-lg"
+        data-form-target="scoreCircle"></div>
     </div>
 
     <!-- Nombre del jugador -->
-    <h2 class="text-2xl font-bold mb-4" data-form-target="resultPlayer"></h2>
+    <h3 class="text-xl font-semibold text-gray-800 mb-4" data-form-target="resultPlayer"></h3>
 
     <!-- Comentario -->
-    <p class="text-lg mb-6" data-form-target="resultComment"></p>
+    <p class="text-lg text-gray-700 italic mb-6" data-form-target="resultComment"></p>
 
     <!-- Botones -->
     <div class="flex justify-center space-x-4">
-      <!-- Botón de imprimir -->
-      <button data-action="click->form#printModal" class="bg-gray-600 text-white font-bold py-2 px-6 rounded hover:bg-gray-700">
+      <button data-action="click->form#printModal"
+              class="bg-gray-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-700 shadow-md">
         Imprimir
       </button>
-      <!-- Botón para cerrar el modal -->
-      <button data-action="click->form#closeModal" class="bg-blue-600 text-white font-bold py-2 px-6 rounded hover:bg-blue-700">
+      <button data-action="click->form#closeModal"
+              class="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 shadow-md">
         Cerrar
       </button>
     </div>
   </div>
 </div>
-  </div>
 
 </body>
 </html>
