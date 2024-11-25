@@ -6,108 +6,12 @@
   <title>Puntugol</title>
   <script src="https://cdn.jsdelivr.net/npm/@hotwired/stimulus@3.2.1/dist/stimulus.umd.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <script>
-    const application = Stimulus.Application.start();
+  <script type="module">
+    import { Application } from "https://cdn.jsdelivr.net/npm/@hotwired/stimulus@3.2.1/dist/stimulus.js";
+    import FormController from "./js/form_controller.js";
 
-    application.register("form", class extends Stimulus.Controller {
-      static targets = [
-        "team", "player", "opponent", "difficulty",
-        "saves", "keySaves", "goodPlays",
-        "effort", "attitude",
-        "modal", "scoreCircle", "resultPlayer", "resultComment"
-      ];
-
-      calculateScore(event) {
-        event.preventDefault();
-
-        const difficultyWeights = {
-          inferior: 10,
-          parejo: 20,
-          ligeramente_superior: 30,
-          superior: 40,
-          muy_superior: 50,
-        };
-
-        const effortWeights = {
-          bajas: 5,
-          normales: 10,
-          altas: 20,
-          muy_altas: 30,
-        };
-
-        const attitudeWeights = {
-          mejorable: 10,
-          normal: 20,
-          buena: 30,
-          muy_buena: 40,
-          excelente: 50,
-        };
-
-        const difficulty = difficultyWeights[this.difficultyTarget.value];
-        const saves = parseInt(this.savesTarget.value || 0);
-        const keySaves = parseInt(this.keySavesTarget.value || 0);
-        const goodPlays = parseInt(this.goodPlaysTarget.value || 0);
-        const effort = effortWeights[this.effortTarget.value];
-        const attitude = attitudeWeights[this.attitudeTarget.value];
-
-        const score = Math.min(
-          100,
-          difficulty * 0.8 + saves * 1.6 + keySaves * 4 + goodPlays * 3 +
-            effort * 0.8 + attitude * 0.7
-        );
-
-        const comments = [
-          "Mejorable 😟", 
-          "Normal 🙂", 
-          "Bien 👍", 
-          "Muy Bien 🌟", 
-          "Excelente 🎉", 
-          "Impresionante 💪", 
-          "¡Increíble! 🏆"
-        ];
-        const commentIndex = Math.max(0, Math.floor(score / 10) - 5);
-
-        // Actualizar el contenido del modal
-        this.resultPlayerTarget.innerText = `Jugador: ${this.playerTarget.value}`;
-        this.resultCommentTarget.innerText = comments[commentIndex] || "Mejorable";
-
-        let bgColor = "bg-red-500"; // Default: Rojo para puntuaciones bajas
-        if (score >= 50 && score < 70) bgColor = "bg-yellow-500"; // Amarillo
-        if (score >= 70 && score < 90) bgColor = "bg-green-500"; // Verde
-        if (score >= 90) bgColor = "bg-blue-500"; // Azul
-        this.scoreCircleTarget.className = `w-32 h-32 flex items-center justify-center rounded-full text-white font-bold text-4xl ${bgColor}`;
-        this.scoreCircleTarget.innerText = Math.round(score);
-
-        // Mostrar el modal
-        this.modalTarget.classList.remove("hidden");
-
-        // Lanzar confeti si la puntuación es 80 o más
-        if (score >= 80) {
-          confetti({
-            particleCount: 100,
-            spread: 70,
-            origin: { y: 0.6 },
-          });
-        }
-      }
-	  
-	  printModal() {
-	    // Usar `window.print()` para imprimir solo el contenido del modal
-	    const originalContent = document.body.innerHTML;
-	    const modalContent = this.modalTarget.innerHTML;
-
-	    document.body.innerHTML = modalContent;
-	    window.print();
-
-	    // Restaurar el contenido original de la página después de imprimir
-	    document.body.innerHTML = originalContent;
-	    location.reload(); // Recargar la página para restaurar eventos y funcionalidad
-	  }
-
-      closeModal() {
-        this.modalTarget.classList.add("hidden");
-      }
-    });
+    const application = Application.start();
+    application.register("form", FormController);
   </script>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -186,7 +90,7 @@
         Calcular Puntuación
       </button>
     </form>
-	
+
 <!-- Modal para el resultado -->
 <div data-form-target="modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
   <div class="bg-white p-6 rounded-lg shadow-lg text-center">
@@ -195,8 +99,8 @@
 
     <!-- Círculo con el resultado -->
     <div class="flex items-center justify-center mb-6">
-      <div 
-        class="w-40 h-40 flex items-center justify-center rounded-full text-white font-bold text-5xl" 
+      <div
+        class="w-40 h-40 flex items-center justify-center rounded-full text-white font-bold text-5xl"
         data-form-target="scoreCircle">
       </div>
     </div>
