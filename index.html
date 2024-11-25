@@ -90,6 +90,19 @@
           });
         }
       }
+	  
+	  printModal() {
+	    // Usar `window.print()` para imprimir solo el contenido del modal
+	    const originalContent = document.body.innerHTML;
+	    const modalContent = this.modalTarget.innerHTML;
+
+	    document.body.innerHTML = modalContent;
+	    window.print();
+
+	    // Restaurar el contenido original de la página después de imprimir
+	    document.body.innerHTML = originalContent;
+	    location.reload(); // Recargar la página para restaurar eventos y funcionalidad
+	  }
 
       closeModal() {
         this.modalTarget.classList.add("hidden");
@@ -194,10 +207,17 @@
     <!-- Comentario -->
     <p class="text-lg mb-6" data-form-target="resultComment"></p>
 
-    <!-- Botón para cerrar el modal -->
-    <button data-action="click->form#closeModal" class="bg-blue-600 text-white font-bold py-2 px-6 rounded hover:bg-blue-700">
-      Cerrar
-    </button>
+    <!-- Botones -->
+    <div class="flex justify-center space-x-4">
+      <!-- Botón de imprimir -->
+      <button data-action="click->form#printModal" class="bg-gray-600 text-white font-bold py-2 px-6 rounded hover:bg-gray-700">
+        Imprimir
+      </button>
+      <!-- Botón para cerrar el modal -->
+      <button data-action="click->form#closeModal" class="bg-blue-600 text-white font-bold py-2 px-6 rounded hover:bg-blue-700">
+        Cerrar
+      </button>
+    </div>
   </div>
 </div>
   </div>
