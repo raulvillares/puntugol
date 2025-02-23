@@ -1,140 +1,153 @@
 <!doctype html>
 <html lang="es">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Puntugol</title>
-  <script src="https://cdn.jsdelivr.net/npm/@hotwired/stimulus@3.2.1/dist/stimulus.umd.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <script type="module">
-    import { Application } from "https://cdn.jsdelivr.net/npm/@hotwired/stimulus@3.2.1/dist/stimulus.js";
-    import FormController from "./js/form_controller.js";
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puntugol</title>
 
-    const application = Application.start();
-    application.register("form", FormController);
-  </script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body {
-      font-family: 'Comic Sans MS', sans-serif;
-      background: url('img/logo.png') no-repeat center;
-      background-size: 200px;
-      background-color: #e0f7ff;
-    }
-  </style>
-  <link rel="icon" type="image/png" href="img/logo.png">
-</head>
-<body class="bg-blue-100 min-h-screen flex flex-col items-center justify-center p-4">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: 'Comic Sans MS', sans-serif;
+        background: url('img/logo.png') no-repeat center;
+        background-size: 200px;
+        background-color: #e0f7ff;
+      }
+    </style>
+    <link rel="icon" type="image/png" href="img/logo.png">
 
-  <!-- Encabezado con el logo -->
-  <div data-controller="form" class="w-full max-w-md bg-white rounded-xl shadow-lg p-6 text-center">
-    <img src="img/logo.png" alt="Puntugol Logo" class="mx-auto mb-4 w-32 h-auto">
-    <h1 class="text-3xl font-bold text-center text-blue-600 mb-4">¡Bienvenido a Puntugol!</h1>
+    <script src="https://cdn.jsdelivr.net/npm/@hotwired/stimulus@3.2.1/dist/stimulus.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script type="module">
+      import { Application } from "https://cdn.jsdelivr.net/npm/@hotwired/stimulus@3.2.1/dist/stimulus.js";
+      import FormController from "./js/form_controller.js";
 
-    <!-- Formulario -->
-    <form data-action="submit->form#calculateScore">
-      <div class="mb-4">
-        <label class="block text-blue-700 font-bold mb-2" for="date">Fecha del partido</label>
-        <input type="date" id="date" lang="es" data-form-target="date" class="w-full px-4 py-2 border rounded" required>
-      </div>
-      <div class="mb-4">
-        <label class="block text-blue-700 font-bold mb-2" for="team">Nombre del equipo</label>
-        <input type="text" id="team" data-form-target="team" class="w-full px-4 py-2 border rounded" required>
-      </div>
-      <div class="mb-4">
-        <label class="block text-blue-700 font-bold mb-2" for="player">Nombre del niño</label>
-        <input type="text" id="player" data-form-target="player" class="w-full px-4 py-2 border rounded" required>
-      </div>
-      <div class="mb-4">
-        <label class="block text-blue-700 font-bold mb-2" for="opponent">Nombre del rival</label>
-        <input type="text" id="opponent" data-form-target="opponent" class="w-full px-4 py-2 border rounded" required>
-      </div>
-      <div class="mb-4">
-        <label class="block text-blue-700 font-bold mb-2" for="difficulty">Dificultad del rival</label>
-        <select id="difficulty" data-form-target="difficulty" class="w-full px-4 py-2 border rounded">
-          <option value="inferior">Inferior</option>
-          <option value="parejo">Parejo</option>
-          <option value="ligeramente_superior">Ligeramente Superior</option>
-          <option value="superior">Superior</option>
-          <option value="muy_superior">Muy Superior</option>
-        </select>
-      </div>
-      <div class="mb-4">
-        <label class="block text-blue-700 font-bold mb-2" for="saves">Paradas</label>
-        <input type="number" id="saves" data-form-target="saves" class="w-full px-4 py-2 border rounded" min="0">
-      </div>
-      <div class="mb-4">
-        <label class="block text-blue-700 font-bold mb-2" for="keySaves">Paradas salvadoras</label>
-        <input type="number" id="keySaves" data-form-target="keySaves" class="w-full px-4 py-2 border rounded" min="0">
-      </div>
-      <div class="mb-4">
-        <label class="block text-blue-700 font-bold mb-2" for="goodPlays">Buenas jugadas</label>
-        <input type="number" id="goodPlays" data-form-target="goodPlays" class="w-full px-4 py-2 border rounded" min="0">
-      </div>
-      <div class="mb-4">
-        <label class="block text-blue-700 font-bold mb-2" for="effort">Ganas</label>
-        <select id="effort" data-form-target="effort" class="w-full px-4 py-2 border rounded">
-          <option value="bajas">Bajas</option>
-          <option value="normales">Normales</option>
-          <option value="altas">Altas</option>
-          <option value="muy_altas">Muy Altas</option>
-        </select>
-      </div>
-      <div class="mb-4">
-        <label class="block text-blue-700 font-bold mb-2" for="attitude">Actitud</label>
-        <select id="attitude" data-form-target="attitude" class="w-full px-4 py-2 border rounded">
-          <option value="mejorable">Mejorable</option>
-          <option value="normal">Normal</option>
-          <option value="buena">Buena</option>
-          <option value="muy_buena">Muy Buena</option>
-          <option value="excelente">Excelente</option>
-        </select>
-      </div>
-      <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700">
-        Calcular Puntuación
-      </button>
-    </form>
+      const application = Application.start();
+      application.register("form", FormController);
+    </script>
+  </head>
 
-<!-- Modal para el resultado -->
-<div data-form-target="modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-  <div class="relative bg-white p-8 rounded-lg shadow-2xl text-center max-w-lg w-full">
-    <!-- Logo Puntugol -->
-    <div class="mb-4">
-      <img src="img/logo.png" alt="Puntugol Logo" class="mx-auto w-24 h-auto">
+  <body class="bg-blue-100 min-h-screen flex flex-col items-center justify-center p-4">
+    <div data-controller="form" class="w-full max-w-md bg-white rounded-xl shadow-lg p-6 text-center">
+
+      <!-- Header with logo -->
+      <img src="img/logo.png" alt="Puntugol" class="mx-auto mb-4 w-32 h-auto">
+      <h1 class="text-3xl font-bold text-center text-blue-600 mb-4">¡Bienvenido a Puntugol!</h1>
+
+      <!-- Form -->
+      <form data-action="submit->form#calculateScore">
+        <div class="mb-4">
+          <label class="block text-blue-700 font-bold mb-2" for="date">Fecha del partido</label>
+          <input type="date" id="date" lang="es" data-form-target="date" class="w-full px-4 py-2 border rounded" required>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-blue-700 font-bold mb-2" for="team">Nombre del equipo</label>
+          <input type="text" id="team" data-form-target="team" class="w-full px-4 py-2 border rounded" required>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-blue-700 font-bold mb-2" for="player">Nombre del niño</label>
+          <input type="text" id="player" data-form-target="player" class="w-full px-4 py-2 border rounded" required>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-blue-700 font-bold mb-2" for="opponent">Nombre del rival</label>
+          <input type="text" id="opponent" data-form-target="opponent" class="w-full px-4 py-2 border rounded" required>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-blue-700 font-bold mb-2" for="difficulty">Dificultad del rival</label>
+          <select id="difficulty" data-form-target="difficulty" class="w-full px-4 py-2 border rounded">
+            <option value="weaker">Inferior</option>
+            <option value="even">Parejo</option>
+            <option value="slightly_superior">Ligeramente Superior</option>
+            <option value="superior">Superior</option>
+            <option value="much_superior">Muy Superior</option>
+          </select>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-blue-700 font-bold mb-2" for="saves">Paradas</label>
+          <input type="number" id="saves" data-form-target="saves" class="w-full px-4 py-2 border rounded" min="0">
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-blue-700 font-bold mb-2" for="keySaves">Paradas salvadoras</label>
+          <input type="number" id="keySaves" data-form-target="keySaves" class="w-full px-4 py-2 border rounded" min="0">
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-blue-700 font-bold mb-2" for="goodPlays">Buenas jugadas</label>
+          <input type="number" id="goodPlays" data-form-target="goodPlays" class="w-full px-4 py-2 border rounded" min="0">
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-blue-700 font-bold mb-2" for="effort">Ganas</label>
+          <select id="effort" data-form-target="effort" class="w-full px-4 py-2 border rounded">
+            <option value="low">Bajas</option>
+            <option value="normal">Normales</option>
+            <option value="high">Altas</option>
+            <option value="very_high">Muy Altas</option>
+          </select>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-blue-700 font-bold mb-2" for="attitude">Actitud</label>
+          <select id="attitude" data-form-target="attitude" class="w-full px-4 py-2 border rounded">
+            <option value="needs_improvement">Mejorable</option>
+            <option value="normal">Normal</option>
+            <option value="good">Buena</option>
+            <option value="very_good">Muy Buena</option>
+            <option value="excellent">Excelente</option>
+          </select>
+        </div>
+
+        <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700">
+          Calcular Puntuación
+        </button>
+      </form>
+
+      <!-- Modal with the result -->
+      <div data-form-target="resultModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="relative bg-white p-8 rounded-lg shadow-2xl text-center max-w-lg w-full">
+          <!-- Logo Puntugol -->
+          <div class="mb-4">
+            <img src="img/logo.png" alt="Puntugol Logo" class="mx-auto w-24 h-auto">
+          </div>
+
+          <!-- Modal header -->
+          <div class="mb-6">
+            <h2 class="text-2xl font-extrabold text-blue-600">Resultado del Partido</h2>
+            <p class="text-lg text-gray-600 mt-2" data-form-target="matchDetails"></p>
+          </div>
+
+          <!-- Score -->
+          <div class="flex justify-center items-center mb-6">
+            <div
+              class="w-40 h-40 flex items-center justify-center rounded-full text-white font-extrabold text-5xl shadow-lg"
+              data-form-target="scoreCircle"></div>
+          </div>
+
+          <!-- Player name -->
+          <h3 class="text-xl font-semibold text-gray-800 mb-4" data-form-target="resultPlayer"></h3>
+
+          <!-- Comment -->
+          <p class="text-lg text-gray-700 italic mb-6" data-form-target="resultComment"></p>
+
+          <!-- Buttons -->
+          <div class="flex justify-center space-x-4">
+            <button data-action="click->form#printResultModal"
+                    class="bg-gray-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-700 shadow-md">
+              Imprimir
+            </button>
+            <button data-action="click->form#closeResultModal"
+                    class="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 shadow-md">
+              Cerrar
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <!-- Encabezado del modal -->
-    <div class="mb-6">
-      <h2 class="text-2xl font-extrabold text-blue-600">Resultado del Partido</h2>
-      <p class="text-lg text-gray-600 mt-2" data-form-target="matchDetails"></p>
-    </div>
-
-    <!-- Círculo con la puntuación -->
-    <div class="flex justify-center items-center mb-6">
-      <div
-        class="w-40 h-40 flex items-center justify-center rounded-full text-white font-extrabold text-5xl shadow-lg"
-        data-form-target="scoreCircle"></div>
-    </div>
-
-    <!-- Nombre del jugador -->
-    <h3 class="text-xl font-semibold text-gray-800 mb-4" data-form-target="resultPlayer"></h3>
-
-    <!-- Comentario -->
-    <p class="text-lg text-gray-700 italic mb-6" data-form-target="resultComment"></p>
-
-    <!-- Botones -->
-    <div class="flex justify-center space-x-4">
-      <button data-action="click->form#printModal"
-              class="bg-gray-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-700 shadow-md">
-        Imprimir
-      </button>
-      <button data-action="click->form#closeModal"
-              class="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 shadow-md">
-        Cerrar
-      </button>
-    </div>
-  </div>
-</div>
-
-</body>
+  </body>
 </html>
